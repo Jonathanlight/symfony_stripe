@@ -24,46 +24,22 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|img|js)/
             security: false
-        login:
-            pattern:  ^/login
-            stateless: true
-            anonymous: true
+
+        user:
+            pattern: ^(/$|/user|/page|/home/|/home$)
             provider: user
-            json_login:
-                check_path: api_login_check
-                username_path: email
-                password_path: password
-                success_handler: lexik_jwt_authentication.handler.authentication_success
-                failure_handler: lexik_jwt_authentication.handler.authentication_failure
-        api:
-            pattern:   ^/api/v1
-            provider: user
-            stateless: true
-            anonymous: true
-            guard:
-                authenticators:
-                    - lexik_jwt_authentication.jwt_token_authenticator
-        admin:
-            pattern: ^(/$|/user|/admin_74ze5f|/home/|/home$)
-            provider: admin
             anonymous: ~
             logout:
                 invalidate_session: true
-                path: /admin_74ze5f/logout
+                path: /user/logout
                 target: /
             switch_user: true
             guard:
                 authenticators:
-                    - App\Security\Guard\AdminLoginAuthenticator
+                    - App\Security\Guard\UserLoginAuthenticator
 
     access_control:
-        - { path: ^/admin_74ze5f/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/admin_74ze5f/, role: ROLE_SUPER_ADMIN }
         - { path: ^/user/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/user/, roles: [ROLE_USER, ROLE_SUPER_ADMIN] }
         - { path: ^/, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api/fb9870/documentation, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api/v1/users/create, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api/v1/users/[0-9]+/enabled, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api/v1/, roles: IS_AUTHENTICATED_FULLY }

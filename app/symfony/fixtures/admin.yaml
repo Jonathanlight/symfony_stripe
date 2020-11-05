@@ -1,8 +1,0 @@
-App\Entity\Admin:
-  admin:
-    email: 'admin@gmail.com'
-    username: 'admin@gmail.com'
-    password: 'admin'
-    role: 'ROLE_SUPER_ADMIN'
-    active: 1
-    created: <dateTime()>

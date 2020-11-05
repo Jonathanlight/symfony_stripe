@@ -2,91 +2,131 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ApiResource(
- *     normalizationContext={"groups"={"user:read"}},
- *     denormalizationContext={"groups"={"user:write"}},
- *     collectionOperations={
- *      "get"={},
- *      "post"={},
- *      "check_gmail_user"={
- *          "method"="GET",
- *          "path"="/users/emails",
- *          "controller"=App\Controller\Api\CheckGmailUser::class,
- *       },
- *       "create_user"={
- *          "method"="POST",
- *          "path"="/users/create",
- *          "controller"=App\Controller\Api\CreateUser::class
- *       }
- *     },
- *     itemOperations={
- *       "get"={},
- *       "enabled_user"={
- *          "method"="GET",
- *          "path"="/users/{id}/enabled",
- *          "controller"=App\Controller\Api\EnabledUser::class
- *       },
- *       "put"={},
- *       "delete"={},
- *     }
- * )
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  */
 class User implements UserInterface
 {
     const ROLE_USER = 'ROLE_USER';
-    const ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
+
+    const STATUS_WOMAN = 'F';
+    const STATUS_MAN = 'H';
+
+    use TimestampableEntity;
 
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"user:read"})
+     * @Groups({"tag:read"})
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"user:read", "user:write"})
+     * @Assert\NotBlank(message = "empty")
+     * @Assert\Length(
+     *      min = 2,
+     *      max = 255,
+     *      minMessage = "error.min.{{ limit }}",
+     *      maxMessage = "error.max.{{ limit }}"
+     * )
+     * @ORM\Column(type="string", length=255, unique=true)
      */
     private $username;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"user:read", "user:write"})
-     */
-    private $email;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"user:write"})
      */
     private $password;
 
     /**
-     * @ORM\OneToMany(targetEntity=Help::class, mappedBy="user")
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $helps;
+    private $lastname;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $firstname;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $gender;
+
+    /**
+     * @SerializedName("password")
+     */
+    private $plainPassword = null;
+
+    /**
+     * @Assert\NotBlank(message = "error.empty")
+     * @Assert\Email(message = "error.invalid")
+     * @Assert\Length(
+     *      min = 5,
+     *      max = 255,
+     *      minMessage = "error.min.{{ limit }}",
+     *      maxMessage = "error.max.{{ limit }}"
+     * )
+     * @ORM\Column(type="string", length=255)
+     */
+    private $email;
+
+    /**
+     * @var string
+     * @ORM\Column()
+     */
+    protected $role = self::ROLE_USER;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $active = false;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Order", mappedBy="user")
+     */
+    private $orders;
 
     public function __construct()
     {
-        $this->helps = new ArrayCollection();
+        $this->orders = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->username.'';
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getId(): ?string
     {
         return $this->id;
+    }
+
+    /**
+     * @param string $username
+     * @return $this
+     */
+    public function setUsername(string $username): self
+    {
+        $this->username = $username;
+
+        return $this;
     }
 
     /**
@@ -98,12 +138,12 @@ class User implements UserInterface
     }
 
     /**
-     * @param string|null $username
+     * @param string $lastname
      * @return $this
      */
-    public function setUsername(?string $username): self
+    public function setLastname(string $lastname): self
     {
-        $this->username = $username;
+        $this->lastname = $lastname;
 
         return $this;
     }
@@ -111,18 +151,18 @@ class User implements UserInterface
     /**
      * @return string|null
      */
-    public function getEmail(): ?string
+    public function getLastname(): ?string
     {
-        return $this->email;
+        return $this->lastname;
     }
 
     /**
-     * @param string|null $email
+     * @param string $firstname
      * @return $this
      */
-    public function setEmail(?string $email): self
+    public function setFirstname(string $firstname): self
     {
-        $this->email = $email;
+        $this->firstname = $firstname;
 
         return $this;
     }
@@ -130,38 +170,28 @@ class User implements UserInterface
     /**
      * @return string|null
      */
-    public function getPassword(): ?string
+    public function getFirstname(): ?string
     {
-        return $this->password;
+        return $this->firstname;
     }
 
     /**
-     * @param string|null $password
+     * @param string $gender
      * @return $this
      */
-    public function setPassword(?string $password): self
+    public function setGender(string $gender): self
     {
-        $this->password = $password;
+        $this->gender = $gender;
 
         return $this;
     }
 
     /**
-     * @return bool
+     * @return string|null
      */
-    public function isEnabled(): bool
+    public function getGender(): ?string
     {
-        return $this->enabled;
-    }
-
-    /**
-     * @param bool $enabled
-     * @return User
-     */
-    public function setEnabled(bool $enabled): User
-    {
-        $this->enabled = $enabled;
-        return $this;
+        return $this->gender;
     }
 
     /**
@@ -189,115 +219,60 @@ class User implements UserInterface
     }
 
     /**
-     * @return bool
+     * @return string|null
      */
-    public function isHasValidatedCGU(): bool
+    public function getEmail(): ?string
     {
-        return $this->hasValidatedCGU;
+        return $this->email;
     }
 
     /**
-     * @param bool $hasValidatedCGU
+     * @param string $email
+     * @return $this
      */
-    public function setHasValidatedCGU(bool $hasValidatedCGU): void
+    public function setEmail(string $email): self
     {
-        $this->hasValidatedCGU = $hasValidatedCGU;
-    }
+        $this->email = $email;
 
-    /**
-     * @return string
-     */
-    public function getReference(): string
-    {
-        return $this->reference;
-    }
-
-    /**
-     * @param string $reference
-     */
-    public function setReference(string $reference): void
-    {
-        $this->reference = $reference;
-    }
-
-    /**
-     * @param \DateTime|null $passwordResetDate
-     */
-    public function setPasswordResetDate(?\DateTime $passwordResetDate): void
-    {
-        $this->passwordResetDate = $passwordResetDate;
-    }
-
-    /**
-     * @return \DateTime|null
-     */
-    public function getPasswordResetDate(): ?\DateTime
-    {
-        return $this->passwordResetDate;
-    }
-
-    /**
-     * @param string $passwordReset
-     */
-    public function setPasswordReset($passwordReset): void
-    {
-        $this->passwordReset = $passwordReset;
+        return $this;
     }
 
     /**
      * @return string|null
      */
-    public function getPasswordReset(): ?string
+    public function getPassword(): ?string
     {
-        return $this->passwordReset;
+        return $this->password;
     }
 
     /**
-     * @param \DateTime|null $updated
+     * @param string $password
+     * @return $this
      */
-    public function setUpdated(?\DateTime $updated): void
+    public function setPassword(string $password): self
     {
-        $this->updated = $updated;
+        $this->password = $password;
+
+        return $this;
     }
 
     /**
-     * @return \DateTime|null
+     * @return string|null
      */
-    public function getUpdated(): ?\DateTime
+    public function getPlainPassword(): ?string
     {
-        return $this->updated;
+        return $this->plainPassword;
     }
 
     /**
-     * @param \DateTime|null $creadted
+     * @param string $plainPassword
+     * @return $this
      */
-    public function setCreated(?\DateTime $creadted): void
+    public function setPlainPassword(string $plainPassword): self
     {
-        $this->created = $creadted;
-    }
+        $this->plainPassword = $plainPassword;
 
-    /**
-     * @return \DateTime|null
-     */
-    public function getCreated(): ?\DateTime
-    {
-        return $this->created;
-    }
-
-    /**
-     * @return \DateTime|null
-     */
-    public function getDeleted(): ?\DateTime
-    {
-        return $this->deleted;
-    }
-
-    /**
-     * @param \DateTime $deleted
-     */
-    public function setDeleted(\DateTime $deleted): void
-    {
-        $this->deleted = $deleted;
+        return $this;
     }
 
     /**
@@ -309,59 +284,60 @@ class User implements UserInterface
     }
 
     /**
-     * Loads the user for the given username.
-     *
-     * @param string $username The username
-     *
-     * @return UserInterface
-     *
-     * @throws UsernameNotFoundException if the user is not found
+     * @return bool|null
      */
-    public function loadUserByUsername($username)
+    public function isActive(): ?bool
     {
-        // TODO: Implement loadUserByUsername() method.
+        return $this->active;
     }
 
     /**
-     * Refreshes the user for the account interface.
-     *
-     * @param UserInterface $user
-     *
-     * @return UserInterface
-     *
-     * @throws UnsupportedUserException if the account is not supported
+     * @param bool $active
+     * @return $this
      */
-    public function refreshUser(UserInterface $user)
+    public function setActive(bool $active): self
     {
-        // TODO: Implement refreshUser() method.
+        $this->active = $active;
+
+        return $this;
     }
 
+    /**
+     * @return false
+     */
     public function eraseCredentials()
     {
-
+        return false;
     }
 
     /**
-     * @param Help $help
+     * @return Collection|Order[]
      */
-    public function addHelp(Help $help): void
+    public function getOrders(): Collection
     {
-        $this->helps[] = $help;
+        return $this->orders;
     }
 
-    /**
-     * @param Help $help
-     */
-    public function removeHelp(Help $help)
+    public function addOrder(Order $order): self
     {
-        $this->helps->removeElement($help);
+        if (!$this->orders->contains($order)) {
+            $this->orders[] = $order;
+            $order->setUser($this);
+        }
+
+        return $this;
     }
 
-    /**
-     * @return Collection
-     */
-    public function getHelps()
+    public function removeOrder(Order $order): self
     {
-        return $this->helps;
+        if ($this->orders->contains($order)) {
+            $this->orders->removeElement($order);
+            // set the owning side to null (unless already changed)
+            if ($order->getUser() === $this) {
+                $order->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }
