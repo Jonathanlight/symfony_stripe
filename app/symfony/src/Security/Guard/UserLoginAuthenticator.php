@@ -101,11 +101,7 @@ class UserLoginAuthenticator extends AbstractGuardAuthenticator
      */
     public function checkCredentials($credentials, UserInterface $user): bool
     {
-        if (true === $user->getActive()) {
-            return true;
-        }
-
-        if (true === $user->getEtat()) {
+        if (true === $user->isActive()) {
             return true;
         }
 
@@ -124,7 +120,7 @@ class UserLoginAuthenticator extends AbstractGuardAuthenticator
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey): RedirectResponse
     {
-        return new RedirectResponse($this->urlGenerator->generate('dashboard'));
+        return new RedirectResponse($this->urlGenerator->generate('home'));
     }
 
     /**

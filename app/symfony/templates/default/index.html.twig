@@ -7,106 +7,18 @@
     <section class="features-icons bg-light text-center">
         <div class="container">
             <div class="row">
+                {% for product in products %}
                 <div class="col-lg-4">
                     <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
-                        <img src="https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/mbp16touch-space-select-201911_GEO_EMEA_LANG_FR?wid=1808&hei=1686&fmt=jpeg&qlt=80&.v=1573151654798" alt="..." class="img-thumbnail">
-                        <h3>MacBook APPLE MACBOOK PRO 15.4"</h3>
-                        <ul>
-                            <li>Ecran LED 15,4" Retina IPS</li>
-                            <li>Processeur Intel® Core™ i9 octocoeur 9ème génération à 2,4 GHz</li>
-                        </ul>
-                        <button class="btn btn-primary btn-block"> {{ 1500|priceEuro('€') }} </button>
+                        <img src="{{ product.image }}" alt="..." class="img-thumbnail">
+                        <h3> {{ product.name }} </h3>
+                        <p>
+                            {{ product.description }}
+                        </p>
+                        <a href="{{ path('payment', {'id': product.id}) }}" class="btn btn-primary btn-block"> {{ product.price|priceEuro('€') }} </a>
                     </div>
                 </div>
-                <div class="col-lg-4">
-                    <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
-                        <img src="https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/mbp16touch-space-select-201911_GEO_EMEA_LANG_FR?wid=1808&hei=1686&fmt=jpeg&qlt=80&.v=1573151654798" alt="..." class="img-thumbnail">
-                        <h3>MacBook APPLE MACBOOK PRO 15.4"</h3>
-                        <ul>
-                            <li>Ecran LED 15,4" Retina IPS</li>
-                            <li>Processeur Intel® Core™ i9 octocoeur 9ème génération à 2,4 GHz</li>
-                        </ul>
-                        <button class="btn btn-secondary btn-block"> {{ 380|priceEuro('€') }} </button>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="features-icons-item mx-auto mb-0 mb-lg-3">
-                        <img src="https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/mbp16touch-space-select-201911_GEO_EMEA_LANG_FR?wid=1808&hei=1686&fmt=jpeg&qlt=80&.v=1573151654798" alt="..." class="img-thumbnail">
-                        <h3>MacBook APPLE MACBOOK PRO 15.4"</h3>
-                        <ul>
-                            <li>Ecran LED 15,4" Retina IPS</li>
-                            <li>Processeur Intel® Core™ i9 octocoeur 9ème génération à 2,4 GHz</li>
-                        </ul>
-                        <button class="btn btn-info btn-block"> {{ 850|priceEuro('$') }} </button>
-                    </div>
-                </div>
-
-                <div class="col-lg-4">
-                    <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
-                        <img src="https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/mbp16touch-space-select-201911_GEO_EMEA_LANG_FR?wid=1808&hei=1686&fmt=jpeg&qlt=80&.v=1573151654798" alt="..." class="img-thumbnail">
-                        <h3>MacBook APPLE MACBOOK PRO 15.4"</h3>
-                        <ul>
-                            <li>Ecran LED 15,4" Retina IPS</li>
-                            <li>Processeur Intel® Core™ i9 octocoeur 9ème génération à 2,4 GHz</li>
-                        </ul>
-                        <button class="btn btn-primary btn-block"> {{ 150|priceEuro('€') }} </button>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
-                        <img src="https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/mbp16touch-space-select-201911_GEO_EMEA_LANG_FR?wid=1808&hei=1686&fmt=jpeg&qlt=80&.v=1573151654798" alt="..." class="img-thumbnail">
-                        <h3>MacBook APPLE MACBOOK PRO 15.4"</h3>
-                        <ul>
-                            <li>Ecran LED 15,4" Retina IPS</li>
-                            <li>Processeur Intel® Core™ i9 octocoeur 9ème génération à 2,4 GHz</li>
-                        </ul>
-                        <button class="btn btn-secondary btn-block"> {{ 380|priceEuro('€') }} </button>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="features-icons-item mx-auto mb-0 mb-lg-3">
-                        <img src="https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/mbp16touch-space-select-201911_GEO_EMEA_LANG_FR?wid=1808&hei=1686&fmt=jpeg&qlt=80&.v=1573151654798" alt="..." class="img-thumbnail">
-                        <h3>MacBook APPLE MACBOOK PRO 15.4"</h3>
-                        <ul>
-                            <li>Ecran LED 15,4" Retina IPS</li>
-                            <li>Processeur Intel® Core™ i9 octocoeur 9ème génération à 2,4 GHz</li>
-                        </ul>
-                        <button class="btn btn-info btn-block"> {{ 850|priceEuro('$') }} </button>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
-                        <img src="https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/mbp16touch-space-select-201911_GEO_EMEA_LANG_FR?wid=1808&hei=1686&fmt=jpeg&qlt=80&.v=1573151654798" alt="..." class="img-thumbnail">
-                        <h3>MacBook APPLE MACBOOK PRO 15.4"</h3>
-                        <ul>
-                            <li>Ecran LED 15,4" Retina IPS</li>
-                            <li>Processeur Intel® Core™ i9 octocoeur 9ème génération à 2,4 GHz</li>
-                        </ul>
-                        <button class="btn btn-primary btn-block"> {{ 150|priceEuro('€') }} </button>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
-                        <img src="https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/mbp16touch-space-select-201911_GEO_EMEA_LANG_FR?wid=1808&hei=1686&fmt=jpeg&qlt=80&.v=1573151654798" alt="..." class="img-thumbnail">
-                        <h3>MacBook APPLE MACBOOK PRO 15.4"</h3>
-                        <ul>
-                            <li>Ecran LED 15,4" Retina IPS</li>
-                            <li>Processeur Intel® Core™ i9 octocoeur 9ème génération à 2,4 GHz</li>
-                        </ul>
-                        <button class="btn btn-secondary btn-block"> {{ 380|priceEuro('€') }} </button>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="features-icons-item mx-auto mb-0 mb-lg-3">
-                        <img src="https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/mbp16touch-space-select-201911_GEO_EMEA_LANG_FR?wid=1808&hei=1686&fmt=jpeg&qlt=80&.v=1573151654798" alt="..." class="img-thumbnail">
-                        <h3>MacBook APPLE MACBOOK PRO 15.4"</h3>
-                        <ul>
-                            <li>Ecran LED 15,4" Retina IPS</li>
-                            <li>Processeur Intel® Core™ i9 octocoeur 9ème génération à 2,4 GHz</li>
-                        </ul>
-                        <button class="btn btn-info btn-block"> {{ 850|priceEuro('$') }} </button>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
         </div>
     </section>

@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Entity\Traits\StripeTrait;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\OrderRepository")
@@ -14,6 +15,7 @@ class Order
     const DEVISE = 'eur';
 
     use StripeTrait;
+    use TimestampableEntity;
 
     /**
      * @ORM\Id()

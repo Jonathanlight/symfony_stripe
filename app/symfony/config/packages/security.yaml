@@ -4,21 +4,13 @@ security:
             entity:
                 class: App\Entity\User
                 property: email
-        admin:
-            entity:
-                class: App\Entity\Admin
-                property: email
     encoders:
         App\Entity\User:
-            algorithm: auto
-            cost: 15
-        App\Entity\Admin:
             algorithm: auto
             cost: 15
 
     role_hierarchy:
         ROLE_ADMIN: ROLE_USER
-        ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
 
     firewalls:
         dev:
@@ -40,6 +32,6 @@ security:
 
     access_control:
         - { path: ^/user/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/user/, roles: [ROLE_USER, ROLE_SUPER_ADMIN] }
+        - { path: ^/user/, roles: ROLE_USER }
         - { path: ^/, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }

@@ -1,5 +1,6 @@
 twig:
     default_path: '%kernel.project_dir%/templates'
     globals:
+        app_environement: '%env(APP_ENV)%'
         stripe_public_key_test: '%env(STRIPE_PUBLIC_KEY_TEST)%'
         stripe_public_key_live: '%env(STRIPE_PUBLIC_KEY_LIVE)%'

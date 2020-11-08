@@ -1,7 +1,7 @@
 App\Entity\User:
-  user{1..10}:
-    username: <freeEmail()>
-    email: <freeEmail()>
+  user:
+    username: 'jonathan'
+    email: 'jonathan@mail.com'
     password: 'bonjour'
     role: 'ROLE_USER'
     enabled: 1
