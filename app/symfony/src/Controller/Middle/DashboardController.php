@@ -31,7 +31,7 @@ class DashboardController extends AbstractController
     }
 
     /**
-     * @Route("/user/subscription/{id}/paiement/load/{_locale}", name="subscription_paiement", methods={"GET", "POST"}, defaults={"_locale" = "fr"})
+     * @Route("/user/subscription/{id}/paiement/loal", name="subscription_paiement", methods={"GET", "POST"})
      * @param Product $product
      * @param ProductManager $productManager
      * @param Request $request
