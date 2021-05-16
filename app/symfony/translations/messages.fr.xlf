@@ -157,5 +157,149 @@
         <target>Url</target>
       </segment>
     </unit>
+    <unit id="y.jjuhn" name="app.head.home">
+      <segment>
+        <source>app.head.home</source>
+        <target>Accueil</target>
+      </segment>
+    </unit>
+    <unit id="RMIRTkS" name="app.head.card">
+      <segment>
+        <source>app.head.card</source>
+        <target>Commande</target>
+      </segment>
+    </unit>
+    <unit id="Y11JoDZ" name="app.head.logout">
+      <segment>
+        <source>app.head.logout</source>
+        <target>Déconnexion</target>
+      </segment>
+    </unit>
+    <unit id="p6MclBY" name="order.reference">
+      <segment>
+        <source>order.reference</source>
+        <target>Réference</target>
+      </segment>
+    </unit>
+    <unit id="WesBAkK" name="order.price">
+      <segment>
+        <source>order.price</source>
+        <target>Prix</target>
+      </segment>
+    </unit>
+    <unit id="NsY3gsq" name="order.brandStripe">
+      <segment>
+        <source>order.brandStripe</source>
+        <target>Type de carte</target>
+      </segment>
+    </unit>
+    <unit id="4qSU5M1" name="order.descriptionShort">
+      <segment>
+        <source>order.descriptionShort</source>
+        <target>Description courte</target>
+      </segment>
+    </unit>
+    <unit id="Vvcai5L" name="order.statusStripe">
+      <segment>
+        <source>order.statusStripe</source>
+        <target>Status</target>
+      </segment>
+    </unit>
+    <unit id="ymldWHS" name="order.last4Stripe">
+      <segment>
+        <source>order.last4Stripe</source>
+        <target>Numéro de la carte</target>
+      </segment>
+    </unit>
+    <unit id="Mg67f5R" name="order.createdAt">
+      <segment>
+        <source>order.createdAt</source>
+        <target>Date de commande</target>
+      </segment>
+    </unit>
+    <unit id="SPs3sxV" name="order.name">
+      <segment>
+        <source>order.name</source>
+        <target>Nom du produit</target>
+      </segment>
+    </unit>
+    <unit id="Kf2sqAf" name="app.head.login">
+      <segment>
+        <source>app.head.login</source>
+        <target>Se-connectez</target>
+      </segment>
+    </unit>
+    <unit id="5QbYs0." name="app.head.register">
+      <segment>
+        <source>app.head.register</source>
+        <target>Inscription</target>
+      </segment>
+    </unit>
+    <unit id="pfyRhoO" name="Types">
+      <segment>
+        <source>Types</source>
+        <target>Types</target>
+      </segment>
+    </unit>
+    <unit id="cxiomE7" name="form.user.genre.title">
+      <segment>
+        <source>form.user.genre.title</source>
+        <target>Titre</target>
+      </segment>
+    </unit>
+    <unit id="hGkKNBi" name="form.user.genre.man">
+      <segment>
+        <source>form.user.genre.man</source>
+        <target>Homme</target>
+      </segment>
+    </unit>
+    <unit id="SraW3NH" name="form.action.password">
+      <segment>
+        <source>form.action.password</source>
+        <target>Mot de passe</target>
+      </segment>
+    </unit>
+    <unit id="3yaSh0N" name="form.user.genre.woman">
+      <segment>
+        <source>form.user.genre.woman</source>
+        <target>Femme</target>
+      </segment>
+    </unit>
+    <unit id="q1VRpER" name="form.action.submit">
+      <segment>
+        <source>form.action.submit</source>
+        <target>S'inscrire</target>
+      </segment>
+    </unit>
+    <unit id="hK4tX3m" name="form.action.newPassword">
+      <segment>
+        <source>form.action.newPassword</source>
+        <target>Confirmation du mot de passe</target>
+      </segment>
+    </unit>
+    <unit id="j1ah7.y" name="form.user.last_name">
+      <segment>
+        <source>form.user.last_name</source>
+        <target>Prénom</target>
+      </segment>
+    </unit>
+    <unit id="RqxGbYn" name="form.user.first_name">
+      <segment>
+        <source>form.user.first_name</source>
+        <target>Nom</target>
+      </segment>
+    </unit>
+    <unit id="OKzIsVj" name="form.action.email">
+      <segment>
+        <source>form.action.email</source>
+        <target>Email</target>
+      </segment>
+    </unit>
+    <unit id="RdDYjrs" name="app.user.register">
+      <segment>
+        <source>app.user.register</source>
+        <target>Formulaire d'inscription</target>
+      </segment>
+    </unit>
   </file>
 </xliff>

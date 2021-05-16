@@ -4,6 +4,8 @@ namespace App\Controller\Security;
 
 use App\Entity\User;
 use App\Form\Security\LoginType;
+use App\Form\Security\RegisterType;
+use App\Manager\UserManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,6 +32,35 @@ class SecurityController extends AbstractController
 
         return $this->render('security/login.html.twig', [
             'error' => $authUtils->getLastAuthenticationError(),
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/user/register", name="register", methods={"GET","POST"})
+     * @param Request $request
+     * @param UserManager $userManager
+     * @return Response
+     * @throws \Exception
+     */
+    public function register(Request $request, UserManager $userManager): Response
+    {
+        if ($this->getUser()) {
+            return $this->redirectToRoute('home');
+        }
+
+        $user = new User();
+        $user->setRole(User::ROLE_USER);
+        $form = $this->createForm(RegisterType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $userManager->registerAccount($user);
+
+            return $this->redirectToRoute('register');
+        }
+
+        return $this->render('security/register.html.twig', [
             'form' => $form->createView()
         ]);
     }

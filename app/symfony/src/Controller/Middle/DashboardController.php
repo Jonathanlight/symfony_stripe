@@ -14,10 +14,9 @@ class DashboardController extends AbstractController
     /**
      * @Route("/user/payment/{id}/show", name="payment", methods={"GET", "POST"})
      * @param Product $product
-     * @param ProductManager $productManager
      * @return Response
      */
-    public function payment(Product $product,ProductManager $productManager): Response
+    public function payment(Product $product, ProductManager $productManager): Response
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('login');
@@ -31,24 +30,23 @@ class DashboardController extends AbstractController
     }
 
     /**
-     * @Route("/user/subscription/{id}/paiement/loal", name="subscription_paiement", methods={"GET", "POST"})
+     * @Route("/user/subscription/{id}/paiement/load", name="subscription_paiement", methods={"GET", "POST"})
      * @param Product $product
-     * @param ProductManager $productManager
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      * @throws \Exception
      */
-    public function paiement(
+    public function subscription(
         Product $product,
-        ProductManager $productManager,
-        Request $request
+        Request $request,
+        ProductManager $productManager
     ){
         $user = $this->getUser();
 
-        if ($request->getMethod() === "POST") {
+        if($request->getMethod() === "POST") {
             $resource = $productManager->stripe($_POST, $product);
 
-            if ($resource !== null) {
+            if(null !== $resource) {
                 $productManager->create_subscription($resource, $product, $user);
 
                 return $this->render('user/reponse.html.twig', [
@@ -58,5 +56,23 @@ class DashboardController extends AbstractController
         }
 
         return $this->redirectToRoute('payment', ['id' => $product->getId()]);
+    }
+
+    /**
+     * @Route("/user/payment/orders", name="payment_orders", methods={"GET"})
+     * @param ProductManager $productManager
+     * @return Response
+     */
+    public function payment_orders(ProductManager $productManager): Response
+    {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('login');
+        }
+
+        return $this->render('user/payment_story.html.twig', [
+            'user' => $this->getUser(),
+            'orders' => $productManager->getOrders($this->getUser()),
+            'sumOrder' => $productManager->countSoldeOrder($this->getUser()),
+        ]);
     }
 }

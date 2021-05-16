@@ -4,6 +4,7 @@ namespace App\Manager;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
+use App\Services\MessageService;
 use App\Services\PasswordService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -26,6 +27,11 @@ class UserManager
     protected $userRepository;
 
     /**
+     * @var MessageService
+     */
+    protected $messageService;
+
+    /**
      * UserManager constructor.
      * @param EntityManagerInterface $entityManager
      * @param PasswordService $passwordService
@@ -34,11 +40,13 @@ class UserManager
     public function __construct(
         EntityManagerInterface $entityManager,
         PasswordService $passwordService,
-        UserRepository $userRepository
+        UserRepository $userRepository,
+        MessageService $messageService
     ) {
         $this->em = $entityManager;
         $this->passwordService = $passwordService;
         $this->userRepository = $userRepository;
+        $this->messageService = $messageService;
     }
 
     /**
@@ -85,11 +93,13 @@ class UserManager
         $user->setUsername($user->getEmail());
         $pass = $this->passwordService->encode($user, $user->getPassword());
         $user->setPassword($pass);
-        $user->setReference($this->referenceFormat());
-        $user->setCreated(new \DateTime());
-        $user->setUpdated(new \DateTime());
+        $user->setActive(true);
+        $user->setCreatedAt(new \DateTime());
+        $user->setUpdatedAt(new \DateTime());
         $this->em->persist($user);
         $this->em->flush();
+
+        $this->messageService->addSuccess('La création de votre compte a bien été valider.');
 
         return [
             'message' => 'Création de compte enregistrée.',

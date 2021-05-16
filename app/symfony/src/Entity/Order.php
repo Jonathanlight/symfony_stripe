@@ -30,6 +30,11 @@ class Order
     private $reference;
 
     /**
+     * @ORM\Column(type="float")
+     */
+    private $price;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="orders")
      */
     private $user;
@@ -78,5 +83,21 @@ class Order
         $this->product = $product;
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPrice()
+    {
+        return $this->price;
+    }
+
+    /**
+     * @param mixed $price
+     */
+    public function setPrice($price): void
+    {
+        $this->price = $price;
     }
 }

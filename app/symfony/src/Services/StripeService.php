@@ -7,14 +7,11 @@ use App\Entity\Product;
 
 class StripeService
 {
-    /**
-     * @var string
-     */
     private $privateKey;
 
     public function __construct()
     {
-        if ($_ENV['APP_ENV'] == 'dev') {
+        if($_ENV['APP_ENV']  === 'dev') {
             $this->privateKey = $_ENV['STRIPE_SECRET_KEY_TEST'];
         } else {
             $this->privateKey = $_ENV['STRIPE_SECRET_KEY_LIVE'];
@@ -33,33 +30,26 @@ class StripeService
         return \Stripe\PaymentIntent::create([
             'amount' => $product->getPrice() * 100,
             'currency' => Order::DEVISE,
-            'payment_method_types' => ['card'],
+            'payment_method_types' => ['card']
         ]);
     }
 
-    /**
-     * @param $amount
-     * @param string $currency
-     * @param string $description
-     * @param array $stripeParameter
-     * @return \Stripe\PaymentIntent|null
-     * @throws \Stripe\Exception\ApiErrorException
-     */
-    public function paiement($amount, string $currency, string $description, array $stripeParameter)
+    public function paiement(
+        $amount,
+        $currency,
+        $description,
+        array $stripeParameter
+    )
     {
         \Stripe\Stripe::setApiKey($this->privateKey);
         $payment_intent = null;
 
-        // stripeIntentId stripeIntentPaymentMethod stripeIntentStatus subscription
-
-        if (isset($stripeParameter['stripeIntentId'])) {
-            $payment_intent = \Stripe\PaymentIntent::retrieve(
-                $stripeParameter['stripeIntentId']
-            );
+        if(isset($stripeParameter['stripeIntentId'])) {
+            $payment_intent = \Stripe\PaymentIntent::retrieve($stripeParameter['stripeIntentId']);
         }
 
-        if ($stripeParameter['stripeIntentStatus'] == "succeeded") {
-
+        if($stripeParameter['stripeIntentStatus'] === 'succeeded') {
+            //TODO
         } else {
             $payment_intent->cancel();
         }
@@ -70,8 +60,7 @@ class StripeService
     /**
      * @param array $stripeParameter
      * @param Product $product
-     * @return \Stripe\Charge|\Stripe\PaymentIntent
-     * @throws \Stripe\Exception\ApiErrorException
+     * @return \Stripe\PaymentIntent|null
      */
     public function stripe(array $stripeParameter, Product $product)
     {

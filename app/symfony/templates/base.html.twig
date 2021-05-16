@@ -1,14 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-
-    <title> Page </title>
+    <title> Produit en ligne | Ordinateur Portable </title>
 
     <!-- Bootstrap core CSS -->
     <link href="https://getbootstrap.com/docs/4.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -57,17 +54,27 @@
 <body>
 
 <!-- Navigation -->
-<nav class="navbar navbar-light bg-dark-red static-top">
+<nav class="navbar navbar-dark bg-dark-red static-top">
     <div class="container">
-        <a class="navbar-brand" href="{{ path('home') }}"> Accueil </a>
+        <a class="navbar-brand btn btn-primary" href="{{ path('home') }}"> {{ 'app.head.home'|trans }} </a>
 
         <div class="form-inline my-2 my-lg-0">
-            <a href="{{ path('login') }}" class="btn btn-success btn-sm mt-3 mr-3 white">
-                Connexion
-            </a>
-            <a href="{{ path('login') }}" class="btn btn-secondary btn-sm mt-3 white">
-                S'inscrire
-            </a>
+            {% if app.user %}
+                <a href="{{ path('payment_orders') }}" class="btn btn-primary btn-sm mt-3 mr-3 white">
+                    <i class="fa fa-card"></i> {{ 'app.head.card'|trans }}
+                </a>
+
+                <a href="{{ path('user_logout') }}" class="btn btn-danger btn-sm mt-3 mr-3 white">
+                    <i class="fas fa-power-off"></i> {{ 'app.head.logout'|trans }}
+                </a>
+            {% else %}
+                <a href="{{ path('login') }}" class="btn btn-success btn-sm mt-3 mr-3 white">
+                    <i class="fas fa-user"></i>  {{ 'app.head.login'|trans }}
+                </a>
+                <a href="{{ path('register') }}" class="btn btn-secondary btn-sm mt-3 white">
+                    <i class="fas fa-users"></i> {{ 'app.head.register'|trans }}
+                </a>
+            {% endif %}
         </div>
     </div>
 </nav>
@@ -81,9 +88,9 @@
 <script src="https://unpkg.com/bootstrap-datepicker@1.9.0/dist/js/bootstrap-datepicker.min.js"></script>
 
 <script type="text/javascript">
-    $(function () {
-        $('.datepicker').datepicker();
-    });
+	$(function () {
+		$('.datepicker').datepicker();
+	});
 </script>
 {% block javascripts %}{% endblock %}
 </body>

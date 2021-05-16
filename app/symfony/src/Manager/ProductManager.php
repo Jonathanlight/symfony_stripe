@@ -5,8 +5,6 @@ namespace App\Manager;
 use App\Entity\Order;
 use App\Entity\Product;
 use App\Entity\User;
-use App\Repository\UserRepository;
-use App\Services\PasswordService;
 use App\Services\StripeService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -42,10 +40,21 @@ class ProductManager
     }
 
     /**
-     * @param Product $product
-     * @return \Stripe\PaymentIntent
-     * @throws \Stripe\Exception\ApiErrorException
+     * @param User $user
+     * @return mixed
      */
+    public function countSoldeOrder(User $user)
+    {
+        return $this->em->getRepository(Order::class)
+            ->countSoldeOrder($user);
+    }
+
+    public function getOrders(User $user)
+    {
+        return $this->em->getRepository(Order::class)
+            ->findByUser($user);
+    }
+
     public function intentSecret(Product $product)
     {
         $intent = $this->stripeService->paymentIntent($product);
@@ -57,20 +66,19 @@ class ProductManager
      * @param array $stripeParameter
      * @param Product $product
      * @return array|null
-     * @throws \Stripe\Exception\ApiErrorException
      */
     public function stripe(array $stripeParameter, Product $product)
     {
         $resource = null;
         $data = $this->stripeService->stripe($stripeParameter, $product);
 
-        if ($data) {
+        if($data) {
             $resource = [
                 'stripeBrand' => $data['charges']['data'][0]['payment_method_details']['card']['brand'],
                 'stripeLast4' => $data['charges']['data'][0]['payment_method_details']['card']['last4'],
                 'stripeId' => $data['charges']['data'][0]['id'],
                 'stripeStatus' => $data['charges']['data'][0]['status'],
-                'stripeToken' => $data['client_secret'],
+                'stripeToken' => $data['client_secret']
             ];
         }
 
@@ -81,21 +89,21 @@ class ProductManager
      * @param array $resource
      * @param Product $product
      * @param User $user
-     * @throws \Exception
      */
     public function create_subscription(array $resource, Product $product, User $user)
     {
         $order = new Order();
         $order->setUser($user);
         $order->setProduct($product);
-        $order->setReference(uniqid("", false));
+        $order->setPrice($product->getPrice());
+        $order->setReference(uniqid('', false));
         $order->setBrandStripe($resource['stripeBrand']);
         $order->setLast4Stripe($resource['stripeLast4']);
         $order->setIdChargeStripe($resource['stripeId']);
         $order->setStripeToken($resource['stripeToken']);
         $order->setStatusStripe($resource['stripeStatus']);
-        $order->setUpdatedAt(new \DateTime());
-        $order->setCreatedAt(new \DateTime());
+        $order->setUpdatedAt(new \Datetime());
+        $order->setCreatedAt(new \Datetime());
         $this->em->persist($order);
         $this->em->flush();
     }

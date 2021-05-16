@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} KeywordsTagger | Register{% endblock %}
+
+{% block body_class %}  {% endblock %}
+
+{% block body %}
+    <section class="section-space cuba-demo-section"></section>
+    <div class="container p-0">
+        <div class="row">
+            <div class="col-md-12">
+                {% include 'composant/flash_messages.html.twig' %}
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-md-6">
+                <img class="img-fluid"  src="{{ asset('img/card.png') }}" alt="register">
+            </div>
+            <div class="col-md-6 gradient-klustr-light">
+                <div class="auth-innerright">
+                    <div class="authentication-box">
+                        <div class="mt-lg-5">
+                            <div class="card-body">
+                                <div>
+                                    {{ form_start(form, {'attr': {'class': 'theme-form'} }) }}
+                                        <h4> {{ 'app.user.register'|trans }} </h4>
+                                        <hr>
+                                        <div class="form-group">
+                                            {{ form_widget(form.gender, {'attr': {'class': 'form-control'} }) }}
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form_widget(form.lastname, {'attr': {'class': 'form-control'} }) }}
+                                            {{ form_errors(form.lastname) }}
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form_widget(form.firstname, {'attr': {'class': 'form-control'} }) }}
+                                            {{ form_errors(form.firstname) }}
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form_widget(form.email, {'attr': {'class': 'form-control'} }) }}
+                                            {{ form_errors(form.email) }}
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form_widget(form.password.first, {'attr': {'class': 'form-control', 'placeholder': 'form.action.password' }}) }}
+                                            {{ form_errors(form.password.first) }}
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form_widget(form.password.second, {'attr': {'class': 'form-control', 'placeholder': 'form.action.newPassword'}}) }}
+                                            {{ form_errors(form.password.second) }}
+                                        </div>
+                                        <div class="text-center">
+                                            {{ form_widget(form.submit) }}
+                                        </div>
+                                    {{ form_end(form) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

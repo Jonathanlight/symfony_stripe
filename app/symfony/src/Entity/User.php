@@ -32,7 +32,6 @@ class User implements UserInterface
     private $id;
 
     /**
-     * @Assert\NotBlank(message = "empty")
      * @Assert\Length(
      *      min = 2,
      *      max = 255,
